@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from 'react'
+import React, {useEffect, useRef, useState } from 'react'
 import Todocss from "./Todo.module.css"
 import {toast} from "react-hot-toast"
 
@@ -13,7 +13,13 @@ const Todo = () => {
   const [search, setSearch] = useState("");
   const [ctask , setCtask] = useState(0);
   const [rtask , setRtask] = useState(0)
+  const bgColor = useRef();
+  const Button = useRef();
+  
+  
+  
 
+ 
 
   function handleForm (e){
     e.preventDefault()
@@ -134,10 +140,25 @@ setTodoTask("");
 
   },[alldata])
 
+
+  function handleDarkmode (){
+    const bodyBg = bgColor.current.style.backgroundColor;
+
+    if(bodyBg === "" || bodyBg === "rgb(248, 230, 27)"){
+      bgColor.current.style.backgroundColor = "rgb(31, 31, 31)";
+      bgColor.current.style.color = "rgb(255, 255, 255)";
+      Button.current.className = "bi bi-brightness-high-fill"
+    }
+    else{
+      bgColor.current.style.backgroundColor = "rgb(248, 230, 27)";
+      bgColor.current.style.color = "black";
+      Button.current.className = "bi bi-moon-fill"
+    }
+  }
   return (
     <div>
-    <div className={Todocss.main}>
-            <h1>Todo-App 📃</h1>
+    <div className={Todocss.main} ref={bgColor}>
+            <h1>Todo-App 📃 <i className="bi bi-moon-fill" onClick={handleDarkmode} ref={Button} ></i></h1>
             <div className={Todocss.task}>
               <form action="" onSubmit={handleForm}>
                 <input type="text" name='' id='' placeholder='Add task here....' className='form-control'
@@ -150,7 +171,7 @@ setTodoTask("");
                       <input type="checkbox" name="" id="" className={Todocss.checkbox} checked={items.complete} 
                         onClick={()=>{handleCheckbox(index)}}
                       />
-                      <span style={{textDecoration: items.complete ? "line-through #880808":""}}>{items.task}</span>
+                      <span style={{textDecoration: items.complete ? "line-through #880808":""}}  >{items.task}</span>
 
                       <i className="bi bi-trash text-danger float-end me-2" onClick={()=>{handleDelete(index)}}></i>
 
